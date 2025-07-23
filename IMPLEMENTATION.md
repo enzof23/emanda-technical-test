@@ -12,7 +12,6 @@ Extend the existing application's functionnality to:
 Based on the requirements and existing codebase, here are some questions I could have asked prior to starting:
 
 - Should we build the additional feature using the existing libraries and packages in the codebase?
-  What should be the UI/UX approach for creating subtasks? (e.g., inline forms, modal dialogs, expandable sections);
 
 - What's the expected nesting depth limit for subtasks? Should we prevent infinite nesting?
 
