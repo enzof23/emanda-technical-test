@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Task } from '../types';
-import { fetchTasks, createTask } from '../api';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Task } from "../types";
+import { fetchTasks, createTask } from "../api";
 
 interface TaskContextType {
   tasks: Task[];
-  addTask: (title: string, parentId?: number) => void;
+  addTask: (title: string, parentId?: number) => Promise<Task>;
 }
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
@@ -18,7 +18,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const addTask = async (title: string, parentId?: number) => {
     const newTask = await createTask(title, parentId);
-    fetchTasks().then(setTasks);
+    setTasks((prev) => [...prev, newTask]);
+    return newTask;
   };
 
   return <TaskContext.Provider value={{ tasks, addTask }}>{children}</TaskContext.Provider>;
@@ -26,6 +27,6 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 export const useTasks = (): TaskContextType => {
   const context = useContext(TaskContext);
-  if (!context) throw new Error('useTasks must be used within TaskProvider');
+  if (!context) throw new Error("useTasks must be used within TaskProvider");
   return context;
 };

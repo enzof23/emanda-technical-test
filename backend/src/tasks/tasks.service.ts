@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Task } from './entities/tasks.entity';
-import { CreateTaskDto } from './dto/create-task.dto';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Task } from "./entities/tasks.entity";
+import { CreateTaskDto } from "./dto/create-task.dto";
 
 @Injectable()
 export class TasksService {
@@ -18,6 +18,12 @@ export class TasksService {
   }
 
   async findAll(): Promise<Task[]> {
-    return this.tasksRepo.find({ relations: ['subtasks', 'parent'] });
+    return this.tasksRepo.find({ relations: ["subtasks", "parent"] });
+  }
+
+  async getSubtasks(id: number): Promise<Task[]> {
+    return this.tasksRepo.find({
+      where: { parent: { id } },
+    });
   }
 }
